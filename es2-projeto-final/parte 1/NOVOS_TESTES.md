@@ -1,43 +1,37 @@
 # Tarefa 1.3 — Novos testes unitários
 
-**Módulo escolhido:** `flaskbb/user/`
+**Módulo escolhido:** `flaskbb/forum/`
 
-**Arquivo de testes:** `tests/unit/user/test_factories.py`
+**Arquivo de testes:** `tests/unit/forum/test_topic_tests.py`
 
-Foram adicionados 10 casos de teste, incluindo testes parametrizados, mocks e verificações das fábricas de formulários e handlers.
-
-| Caso de teste                                                           | Arquivo                             | Tipo  | Verificação principal                                                |
-| ----------------------------------------------------------------------- | ----------------------------------- | ----- | -------------------------------------------------------------------- |
-| `test_settings_update_handler_factory_returns_handler`                  | `tests/unit/user/test_factories.py` | Feliz | Retorna o handler de configurações esperado.                         |
-| `test_details_update_factory_returns_handler`                           | `tests/unit/user/test_factories.py` | Feliz | Retorna o handler de detalhes e chama o mock de validadores.         |
-| `test_password_update_handler_returns_handler`                          | `tests/unit/user/test_factories.py` | Feliz | Retorna o handler de senha esperado.                                 |
-| `test_email_update_handler_returns_handler`                             | `tests/unit/user/test_factories.py` | Feliz | Retorna o handler de e-mail esperado.                                |
-| `test_settings_form_factory_adds_default_theme`                         | `tests/unit/user/test_factories.py` | Borda | Inclui a opção de tema padrão nas escolhas.                          |
-| `test_settings_form_factory_loads_available_languages`                  | `tests/unit/user/test_factories.py` | Feliz | Carrega os idiomas disponibilizados pela dependência.                |
-| `test_settings_form_factory_uses_current_settings_when_needed` — caso 1 | `tests/unit/user/test_factories.py` | Borda | Formulário não enviado e inválido: recupera as configurações atuais. |
-| `test_settings_form_factory_uses_current_settings_when_needed` — caso 2 | `tests/unit/user/test_factories.py` | Borda | Formulário não enviado e válido: recupera as configurações atuais.   |
-| `test_settings_form_factory_uses_current_settings_when_needed` — caso 3 | `tests/unit/user/test_factories.py` | Erro  | Formulário enviado e inválido: recupera as configurações atuais.     |
-| `test_settings_form_factory_uses_current_settings_when_needed` — caso 4 | `tests/unit/user/test_factories.py` | Feliz | Formulário enviado e válido: não substitui os dados validados.       |
+| Caso de teste                                | Arquivo                                | Tipo  | Verificação principal                                                                                         |
+| -------------------------------------------- | -------------------------------------- | ----- | ------------------------------------------------------------------------------------------------------------- |
+| `test_updates_forum_last_post` — caso 1      | `tests/unit/forum/test_topic_tests.py` | Feliz | Atualiza as informações do último post no fórum.                                                              |
+| `test_updates_forum_last_post` — caso 2      | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a atualização com outro usuário e título.                                                            |
+| `test_updates_forum_last_post` — caso 3      | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a atualização com diferentes dados de entrada.                                                       |
+| `test_updates_last_post_with_different_user` | `tests/unit/forum/test_topic_tests.py` | Borda | Confere se o autor do post e o usuário informado são tratados corretamente.                                   |
+| `test_create_topic_saves_first_post`         | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a criação do tópico, o salvamento do primeiro post e o incremento da quantidade de tópicos do fórum. |
+| `test_topic_save_without_user_or_forum`      | `tests/unit/forum/test_topic_tests.py` | Erro  | Verifica o retorno quando os dados necessários para criar um tópico não são informados.                       |
+| `test_topic_save_updates_existing_topic`     | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a atualização e o salvamento de um tópico existente.                                                 |
+| `test_topic_creation_sets_title` — caso 1    | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a criação do tópico com o primeiro título parametrizado e o vínculo com o primeiro post.             |
+| `test_topic_creation_sets_title` — caso 2    | `tests/unit/forum/test_topic_tests.py` | Feliz | Verifica a criação do tópico com o segundo título parametrizado e o vínculo com o primeiro post.              |
 
 ## Execução dos testes
 
 Comando utilizado:
 
-`uv run pytest tests/unit/user/test_factories.py -v`
+`pytest tests/unit/forum/test_topic_tests.py -v`
+
 
 ## 1.4 — Teste parametrizado
 
-Foi implementado o teste parametrizado `test_settings_form_factory_uses_current_settings_when_needed`, no arquivo `tests/unit/user/test_factories.py`.
+Foram implementados testes parametrizados utilizando `pytest.mark.parametrize` no arquivo `tests/unit/forum/test_topic_tests.py`.
 
-O teste utiliza `pytest.mark.parametrize` para verificar quatro combinações de envio e validação do formulário, incluindo situações válidas e inválidas.
+A parametrização permite verificar o comportamento das funções com diferentes títulos e dados de entrada, evitando a repetição de código e ampliando a cobertura dos testes.
 
 ## 1.5 — Teste com dublê (mock)
 
-O teste `test_details_update_factory_returns_handler`, localizado em `tests/unit/user/test_factories.py`, utiliza `mocker.patch` para substituir a chamada ao hook que reúne os validadores de atualização de detalhes.
+O teste `test_create_topic_saves_first_post`, localizado em `tests/unit/forum/test_topic_tests.py`, utiliza `monkeypatch` para substituir temporariamente o método `save` do post por uma função que registra a chamada e executa o método original.
 
-O mock foi necessário para isolar essa dependência externa e testar a fábrica sem depender da execução dos plugins reais. A interação é verificada com `assert_called_once()`, garantindo que o hook foi chamado exatamente uma vez.
-
-
-
-
-
+O recurso foi utilizado para verificar se o primeiro post é salvo durante a criação do tópico e se a operação recebe o usuário e o tópico corretos. Dessa forma, a interação é observada sem impedir a execução real do salvamento no banco de dados.
+A verificação é realizada por meio da lista `calls`, garantindo que o método foi chamado com os argumentos esperados.

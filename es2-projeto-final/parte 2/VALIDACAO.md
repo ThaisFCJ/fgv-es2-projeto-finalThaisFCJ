@@ -1,30 +1,30 @@
-# Validação Final — Parte 2
-
 ## 1. Execução dos testes
 
 Foi executada a suíte completa com:
 
 ```bash
-uv run pytest --cov=flaskbb.user --cov-branch --cov-report=term-missing
+uv run pytest --cov=flaskbb.forum --cov-branch --cov-report=term-missing
 ```
 
 Resultado:
 
-* 241 testes passaram;
+* 250 testes passaram;
 * 1 teste falhou;
 * 1 teste foi ignorado;
-* Tempo de execução: 44,10 segundos.
+* Tempo de execução: 43,55 segundos.
 
-A falha ocorreu em `tests/unit/utils/test_translations.py::test_flaskbbdomain_translations`, relacionada ao retorno de `babel.support.NullTranslations` em vez de `Translations`. (Já existente anteriormente)
+A falha ocorreu em `tests/unit/utils/test_translations.py::test_flaskbbdomain_translations`, relacionada ao retorno de `babel.support.NullTranslations` em vez de `Translations`.
 
 ## 2. Comparação da cobertura
 
-| Métrica               | Parte 1 |     Parte 2 |
-| --------------------- | ------: | ----------: |
-| Cobertura de linhas   |  33,39% |         37% |
-| Cobertura de branches |  61,11% | A confirmar |
+| Métrica               | Parte 1 | Parte 2 |
+| --------------------- | ------: | ------: |
+| Cobertura de linhas   |  33,39% |  33,93% |
+| Cobertura de branches |  61,11% |  39,44% |
 
-A cobertura de linhas aumentou de 33,39% para 37%, representando um aumento de 3,61.
+A cobertura de linhas aumentou aproximadamente 0,54 ponto percentual em relação à Parte 1. Entretanto, a cobertura de branches diminuiu de 61,11% para 39,44%.
+
+Assim, a cobertura de linhas foi mantida sem regressão, mas a cobertura de branches apresentou redução.
 
 ## 3. Análise das refatorações
 

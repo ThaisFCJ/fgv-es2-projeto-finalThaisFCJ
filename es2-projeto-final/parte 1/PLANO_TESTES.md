@@ -2,32 +2,33 @@
 
 ## 1. Módulo escolhido
 
-**Módulo:** `flaskbb/user/`
+**Módulo:** `flaskbb/forum/`
 
-Modelo escolhido por possuir funcionalidades relacionadas a formulários, validações e atualização de dados. 
-O módulo também possui funções de criação de formulários e handlers que podem ser exploradas nos testes, como em `services/factories.py`.
+O módulo foi escolhido por possuir funcionalidades relacionadas à criação e atualização de tópicos, gerenciamento de postagens e controle de leitura dos usuários.
 
 ## 2. Cobertura inicial
 
-| Métrica               | Resultado |
-| --------------------- | --------: |
-| Linhas cobertas       |   172/560 |
-| Cobertura de linhas   |    30,71% |
-| Branches cobertos     |     42/72 |
-| Cobertura de branches |    58,33% |
+A cobertura inicial foi coletada antes das alterações e refatorações, considerando os módulos analisados no projeto.
+
+| Módulo     | Linhas cobertas | Cobertura de linhas | Branches cobertos | Cobertura de branches |
+| ---------- | --------------: | ------------------: | ----------------: | --------------------: |
+| Forum      |        417/1272 |              32,78% |           110/284 |                38,73% |
+
 
 ## 3. Meta de cobertura
 
-Aumentar a cobertura de linhas em pelo menos 15 pontos percentuais, passando de 30,71% para, no mínimo, 45,71%.
+Aumentar a cobertura de linhas do módulo `forum` em pelo menos 15 pontos percentuais, passando de 32,78% para, no mínimo, 47,78%.
 
 ## 4. Cenários inicialmente identificados
 
-| Nº | Cenário                                                                                                                    | Tipo        |
-| -- | -------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1  | Verificar se a factory de atualização de detalhes reúne os validadores dos plugins e retorna o handler correspondente.     | Happy path  |
-| 2  | Verificar se a factory de atualização de senha reúne os validadores e retorna o handler correspondente.                    | Happy path  |
-| 3  | Verificar se a factory de atualização de e-mail reúne os validadores e retorna o handler correspondente.                   | Happy path  |
-| 4  | Verificar se a factory de configurações retorna o handler de configurações sem reunir validadores.                         | Happy path  |
-| 5  | Verificar se a factory de formulário de configurações adiciona a opção padrão de tema e carrega os idiomas disponíveis.    | Happy path  |
-| 6  | Verificar se o formulário de configurações mantém os dados enviados quando a validação é bem-sucedida.                     | Happy path  |
-| 7  | Verificar se o formulário de configurações restaura os valores atuais do usuário quando não há envio ou a validação falha. | Limite/erro |
+| Nº | Cenário                                                                                                                          | Tipo       |
+| -- | -------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1  | Verificar se a criação de um tópico salva corretamente as informações e atualiza os dados relacionados ao fórum.                 | Happy path |
+| 2  | Verificar se a criação de um tópico salva corretamente o primeiro post e atualiza a quantidade de tópicos do fórum.              | Happy path |
+| 3  | Verificar se a atualização das informações do último post registra corretamente o post, o autor, o título e a data.              | Happy path |
+| 4  | Verificar se as informações do último post são atualizadas corretamente quando o autor do post é diferente do usuário informado. | Limite     |
+| 5  | Verificar se a criação de um tópico utiliza corretamente diferentes títulos e mantém o vínculo com o primeiro post.              | Happy path |
+| 6  | Verificar se o salvamento de um tópico existente mantém as alterações realizadas.                                                | Happy path |
+| 7  | Verificar o comportamento da criação de um tópico quando o usuário ou o fórum não são informados.                                | Erro       |
+
+Os cenários foram utilizados como base para a implementação dos novos testes unitários no módulo `forum/`, incluindo parametrização e uso de dublê para verificar as interações durante a criação de tópicos.
